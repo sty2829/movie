@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form onsubmit="return check();">
+<input type="text" id="name" name="name">
+<button>확인</button>
+</form>
+<script>
+function validation(id,min,max,msg){
+	var obj = document.querySelector(id);
+	if( (min && obj.value.trim().length<min) || (max && obj.value.trim().length>max)){
+		alert(msg);
+		obj.value='';
+		obj.focus();
+		return false;
+	}
+	return true;
+}
+
+function check(){
+	if(!validation('#name',2,4,'이름을 입력해야지!!')){
+		return false;
+	}
+
+	return true;
+}
+</script>
+</body>
+</html>

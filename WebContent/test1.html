@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<script>
+var str = ''; // 불리언값 false .. ?
+if(!str){
+	alert('어라 빈문자열을 false 인가보다');
+}
+str = 0;
+if(!str){
+	alert('어라? 0도 펄스인가보다');
+}
+str = false;
+if(!str){
+	alert('false는 당연히 false지');
+}
+
+str = null;
+if(!str){
+	alert('어라 null 도 fasle 인가보다');
+}
+str = undefined;
+if(!str){
+	alert('어라 undefined 도 fasle 인가보다');
+}
+
+</script>
+</body>
+</html>
