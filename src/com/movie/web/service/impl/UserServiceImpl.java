@@ -13,13 +13,29 @@ public class UserServiceImpl implements UserService {
 	UserDAO userDAO = new UserDAOImpl();
 	
 	@Override
-	public List<Map<String, String>> selectUserList() {
-		return userDAO.selectUserList();
+	public List<Map<String, String>> selectUserList(Map<String, String> user) {
+		return userDAO.selectUserList(user);
 	}
 
 	@Override
 	public Map<String, String> selectUser(int uiNum) {
 		return userDAO.selectUser(uiNum);
+	}
+	
+	@Override
+	public Map<String, String> login(Map<String, String> user) {
+		Map<String,String> rMap = userDAO.selectUser(user);
+		if(rMap==null) {
+			rMap = new HashMap<>();
+			rMap.put("msg", "없는 아이디 입니다.");
+		}else {
+			rMap.put("msg", "로그인에 성공하였습니다.");
+			String uiPwd = rMap.get("ui_pwd");
+			if(!uiPwd.equals(user.get("ui_pwd"))) {
+				rMap.put("msg", "비밀번호가 틀렸습니다.");
+			}
+		}
+		return rMap;
 	}
 
 	@Override
@@ -44,5 +60,7 @@ public class UserServiceImpl implements UserService {
 	public Map<String,String> deleteUser(int uiNum) {
 		return null;
 	}
+
+
 
 }

@@ -12,9 +12,27 @@ import com.movie.web.conn.DBConn;
 import com.movie.web.dao.UserDAO;
 
 public class UserDAOImpl implements UserDAO {
+	
+	private final String col = "ui_num\r\n" + 
+			"ui_name\r\n" + 
+			"ui_id\r\n" + 
+			"ui_pwd\r\n" + 
+			"ui_genre\r\n" + 
+			"ui_email\r\n" + 
+			"ui_phone1\r\n" + 
+			"ui_phone2\r\n" + 
+			"ui_address\r\n" + 
+			"ui_hint\r\n" + 
+			"ui_answer\r\n" + 
+			"credat\r\n" + 
+			"cretim\r\n" + 
+			"moddat\r\n" + 
+			"modtim";
+	
+	private final String[] cols = col.split("\r\n");			
 
 	@Override
-	public List<Map<String, String>> selectUserList() {
+	public List<Map<String, String>> selectUserList(Map<String, String> user) {
 		Connection con = DBConn.getConn();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -24,24 +42,11 @@ public class UserDAOImpl implements UserDAO {
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				Map<String,String> user = new HashMap<>();
-				user.put("ui_num", rs.getString("ui_num"));
-				user.put("ui_name", rs.getString("ui_name"));
-				user.put("ui_id", rs.getString("ui_id"));
-				user.put("ui_pwd", rs.getString("ui_pwd"));
-				user.put("ui_genre", rs.getString("ui_genre"));
-				user.put("ui_email", rs.getString("ui_email"));
-				user.put("ui_phone1", rs.getString("ui_phone1"));
-				user.put("ui_phone2", rs.getString("ui_phone2"));
-				user.put("ui_address", rs.getString("ui_address"));
-				user.put("ui_hint", rs.getString("ui_hint"));
-				user.put("ui_answer", rs.getString("ui_answer"));
-				user.put("credat", rs.getString("credat"));
-				user.put("cretim", rs.getString("cretim"));
-				user.put("moddat", rs.getString("moddat"));
-				user.put("modtim", rs.getString("modtim"));
-				
-				userList.add(user);
+				Map<String,String> users = new HashMap<>();
+				for(int i=0; i<cols.length; i++) {
+					users.put(cols[i], rs.getString(cols[i]));
+				}		
+				userList.add(users);
 			}
 
 		} catch(Exception e) {
@@ -64,21 +69,9 @@ public class UserDAOImpl implements UserDAO {
 			ps.setInt(1, uiNum);
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				user.put("ui_num", rs.getString("ui_num"));
-				user.put("ui_name", rs.getString("ui_name"));
-				user.put("ui_id", rs.getString("ui_id"));
-				user.put("ui_pwd", rs.getString("ui_pwd"));
-				user.put("ui_genre", rs.getString("ui_genre"));
-				user.put("ui_email", rs.getString("ui_email"));
-				user.put("ui_phone1", rs.getString("ui_phone1"));
-				user.put("ui_phone2", rs.getString("ui_phone2"));
-				user.put("ui_address", rs.getString("ui_address"));
-				user.put("ui_hint", rs.getString("ui_hint"));
-				user.put("ui_answer", rs.getString("ui_answer"));
-				user.put("credat", rs.getString("credat"));
-				user.put("cretim", rs.getString("cretim"));
-				user.put("moddat", rs.getString("moddat"));
-				user.put("modtim", rs.getString("modtim"));
+				for(int i=0; i<cols.length; i++) {
+					user.put(cols[i], rs.getString(cols[i]));
+				}		
 			}
 
 		} catch(Exception e) {
@@ -88,7 +81,34 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return user;
 	}
-
+	
+	@Override
+	public Map<String, String> selectUser(Map<String, String> user) {
+		String sql = "select * from user_info where ui_id = ?";
+		Connection con = DBConn.getConn();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, user.get("ui_id"));
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				Map<String,String> rUser = new HashMap<>();
+				for(int i=0; i<cols.length; i++) {
+					rUser.put(cols[i], rs.getString(cols[i]));
+				}
+				return rUser;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBConn.close(con, ps, rs);
+			
+		}
+		
+		return null;
+	}	
+	
 	@Override
 	public int insertUser(Map<String, String> user) {
 		Connection con = DBConn.getConn();
@@ -102,16 +122,9 @@ public class UserDAOImpl implements UserDAO {
 		sql += " values(seq_ui_num.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'), to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'))";
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(1, user.get("name"));
-			ps.setString(2, user.get("id"));
-			ps.setString(3, user.get("pwd"));
-			ps.setString(4, user.get("genre"));
-			ps.setString(5, user.get("email"));
-			ps.setString(6, user.get("phone1"));
-			ps.setString(7, user.get("phone2"));
-			ps.setString(8, user.get("address"));
-			ps.setString(9, user.get("hint"));
-			ps.setString(10, user.get("answer"));
+			for(int i=1; i<=10; i++) {
+				ps.setString(i,user.get(cols[i]));
+			};
 			cnt = ps.executeUpdate();
 			DBConn.commit(con);
 		} catch(Exception e) {
@@ -144,16 +157,9 @@ public class UserDAOImpl implements UserDAO {
 		sql += " where ui_num = ?"; 
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(1, user.get("name"));
-			ps.setString(2, user.get("id"));
-			ps.setString(3, user.get("pwd"));
-			ps.setString(4, user.get("genre"));
-			ps.setString(5, user.get("email"));
-			ps.setString(6, user.get("phone1"));
-			ps.setString(7, user.get("phone2"));
-			ps.setString(8, user.get("address"));
-			ps.setString(9, user.get("hint"));
-			ps.setString(10, user.get("answer"));
+			for(int i=1; i<=10; i++) {
+				ps.setString(1, user.get(cols[i]));
+			}
 			cnt = ps.executeUpdate();
 			DBConn.commit(con);
 		} catch(Exception e) {
@@ -190,6 +196,10 @@ public class UserDAOImpl implements UserDAO {
 	
 	public static void main(String[] args) {
 		UserDAO userDAO = new UserDAOImpl();
-		System.out.println(userDAO.deleteUser(2));
+		Map<String, String> user = new HashMap<>();
+		user.put("ui_id", "black");
+		System.out.println(userDAO.selectUser(user));
 	}
+
+
 }

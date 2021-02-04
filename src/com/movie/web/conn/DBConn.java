@@ -9,14 +9,14 @@ import java.sql.Statement;
 
 public class DBConn {
 
-	private static final String DRIVER_CLASSS_NAME   = "oracle.jdbc.OracleDriver";
+	private static final String DRIVER_CLASS_NAME   = "oracle.jdbc.OracleDriver";
 	private static final String URL  = "jdbc:oracle:thin:@localhost:1521/xe";
 	private static final String USER  = "jtest";
 	private static final String PASSWORD  = "ezen1234";
 	
 	static {
 		try {
-			Class.forName(DRIVER_CLASSS_NAME);
+			Class.forName(DRIVER_CLASS_NAME);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

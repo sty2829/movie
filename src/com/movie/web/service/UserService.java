@@ -5,9 +5,11 @@ import java.util.Map;
 
 public interface UserService {
 	
-	public List<Map<String,String>> selectUserList();
+	public List<Map<String,String>> selectUserList(Map<String, String> user);
 	
 	public Map<String,String> selectUser(int uiNum);
+	
+	public Map<String,String> login(Map<String,String> user);
 	
 	public Map<String,String> insertUser(Map<String,String> user);
 	
