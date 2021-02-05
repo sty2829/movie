@@ -1,5 +1,9 @@
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+Map<String,String> user = (Map<String,String>)session.getAttribute("user");
+%>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a class="navbar-brand" href="">SERVLIX</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +36,21 @@
             </div>
           </li>
           <li class="nav-item">
-          	<a class="nav-link" href="/views/user/login">로그인</a>
+<%
+if(user==null){
+%>
+			<a class="nav-link" href="/views/user/login">로그인</a>
+<%
+}else{
+%>
+			<a class="nav-link" href=""><%=user.get("ui_name") %>님 정보 보기</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/user/logout">로그아웃</a>
+		</li>	
+<%
+}
+%>
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="text" placeholder="검색어.." aria-label="검색어..">
