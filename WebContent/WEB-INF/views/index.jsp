@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SERVLIX</title>
 <jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
 </head>
 <body>

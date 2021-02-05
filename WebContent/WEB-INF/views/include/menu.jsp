@@ -5,7 +5,7 @@
 Map<String,String> user = (Map<String,String>)session.getAttribute("user");
 %>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="">SERVLIX</a>
+      <a class="navbar-brand" href="/">SERVLIX</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -43,7 +43,7 @@ if(user==null){
 <%
 }else{
 %>
-			<a class="nav-link" href=""><%=user.get("ui_name") %>님 정보 보기</a>
+			<a class="nav-link" href="/views/user/info"><%=user.get("ui_name") %>님 정보 보기</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="/user/logout">로그아웃</a>

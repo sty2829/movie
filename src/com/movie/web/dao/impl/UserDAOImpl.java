@@ -59,19 +59,20 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public Map<String, String> selectUser(int uiNum) {
+		String sql = "select * from user_info where ui_num = ?";
 		Connection con = DBConn.getConn();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Map<String,String> user = new HashMap<>();
-		String sql = "select * from user_info where ui_num = ?";
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, uiNum);
 			rs = ps.executeQuery();
 			if(rs.next()) {
+				Map<String,String> user = new HashMap<>();
 				for(int i=0; i<cols.length; i++) {
 					user.put(cols[i], rs.getString(cols[i]));
-				}		
+				}
+				return user;
 			}
 
 		} catch(Exception e) {
@@ -79,7 +80,7 @@ public class UserDAOImpl implements UserDAO {
 		} finally {
 			DBConn.close(con, ps, rs);
 		}
-		return user;
+		return null;
 	}
 	
 	@Override
