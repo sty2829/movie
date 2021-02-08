@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -11,26 +12,33 @@
 </head>
 <body>
 <%
-Map<String,String[]> params = request.getParameterMap();
-Map<String,String> param = new HashMap<>();
-Iterator<String> iterator = params.keySet().iterator();
-while(iterator.hasNext()){
-	String key = iterator.next();
-	String[] values = params.get(key);
-	String value = "";
-	for(int i=0; i<values.length; i++) {
-		value += values[i] + ",";
+boolean isFileUpload = ServletFileUpload.isMultipartContent(request);
+if(isFileUpload){
+	out.print("파일 업로드네?");
+}else{
+	request.setCharacterEncoding("UTF-8");
+	Map<String,String[]> params = request.getParameterMap();
+	Map<String,String> param = new HashMap<>();
+	Iterator<String> iterator = params.keySet().iterator();
+	while(iterator.hasNext()){
+		String key = iterator.next();
+		String[] values = params.get(key);
+		String value = "";
+		for(int i=0; i<values.length; i++) {
+			value += values[i] + ",";
+		}
+		value = value.substring(0,value.length()-1);
+		param.put(key, value);
 	}
-	value = value.substring(0,value.length()-1);
-	param.put(key, value);
+	out.print(param);
 }
-out.print(param);
 %>
-	<form>
-		<input type="text" name="input1"><br>
-		<input type="text" name="input2"><br>
-		<input type="text" name="input3"><br>
-		<input type="text" name="input3"><br>
+	<form method="post" action="/form.jsp">
+		<input type="text" name="name" value="test">
+		<button>전송</button>
+	</form>
+	<form method="post" action="/form.jsp" enctype="multipart/form-data">
+		<input type="file" name="name" value="test">
 		<button>전송</button>
 	</form>
 </body>

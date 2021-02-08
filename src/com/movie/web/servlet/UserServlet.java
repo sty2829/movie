@@ -37,6 +37,7 @@ public class UserServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String cmd = MapConvert.getCmd(request.getRequestURI());
 		Map<String, String> user = MapConvert.getMap(request.getParameterMap());
 		Map<String,String> rMap = new HashMap<>();
@@ -52,6 +53,35 @@ public class UserServlet extends HttpServlet {
 			}
 		}else if("insert".equals(cmd)) {
 			rMap = userService.insertUser(user);
+		}else if("update".equals(cmd)) {
+			HttpSession session = request.getSession();
+			Map<String,String> pUser = (Map<String,String>) session.getAttribute("user");
+			if(pUser==null) {
+				response.sendRedirect(path);
+				return;
+			}
+			user.put("ui_num", pUser.get("ui_num"));
+			rMap = userService.updateUser(user);
+			if(!"0".equals(rMap.get("result"))) {
+				session.setAttribute("user", rMap);
+				path = "/views/user/info";
+			}
+		}else if("delete".equals(cmd)) {
+			HttpSession session = request.getSession();
+			Map<String,String> pUser = (Map<String,String>) session.getAttribute("user");
+			if(pUser==null) {
+				response.sendRedirect(path);
+				return;
+			}
+			user.put("ui_id", pUser.get("ui_id"));
+			rMap = userService.deleteUser(user);
+			if("0".equals(rMap.get("result"))) {
+				path = "/views/user/info";
+			}else {
+				session.invalidate();
+				response.sendRedirect("/");
+				return;
+			}
 		}
 		
 		request.setAttribute("rMap", rMap);

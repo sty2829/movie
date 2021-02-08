@@ -21,4 +21,12 @@
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/user/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>FileServlet</servlet-name>
+  	<servlet-class>com.movie.web.servlet.FileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>FileServlet</servlet-name>
+  	<url-pattern>/file/*</url-pattern>
+  </servlet-mapping>
 </web-app>

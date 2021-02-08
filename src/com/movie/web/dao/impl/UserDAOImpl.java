@@ -141,27 +141,32 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public int updateUser(Map<String, String> user) {
+		String sql = "update user_info set";
+		sql += " ui_pwd = ?,"; 
+		sql += " ui_genre = ?,"; 
+		sql += " ui_email = ?,"; 
+		sql += " ui_phone1 = ?,"; 
+		sql += " ui_phone2 = ?,"; 
+		sql += " ui_address = ?,"; 
+		sql += " ui_hint = ?,"; 
+		sql += " ui_answer = ?,"; 
+		sql += " moddat = to_char(sysdate, 'YYYYMMDD'),"; 
+		sql += " modtim = to_char(sysdate, 'HH24MISS')"; 
+		sql += " where ui_num = ?"; 
 		Connection con = DBConn.getConn();
 		PreparedStatement ps = null;
 		int cnt = 0;
-		String sql = "update user_info set";
-		sql += " ui_name = ?"; 
-		sql += " ui_pwd = ?"; 
-		sql += " ui_genre = ?"; 
-		sql += " ui_email = ?"; 
-		sql += " ui_phone1 = ?"; 
-		sql += " ui_phone2 = ?"; 
-		sql += " ui_address = ?"; 
-		sql += " ui_hint = ?"; 
-		sql += " ui_answer = ?"; 
-		sql += " moddat = to_char(sysdate, 'YYYYMMDD')"; 
-		sql += " modtim = to_char(sysdate, 'HH24MISS')"; 
-		sql += " where ui_num = ?"; 
 		try {
 			ps = con.prepareStatement(sql);
-			for(int i=1; i<=10; i++) {
-				ps.setString(1, user.get(cols[i]));
-			}
+			ps.setString(1, user.get("ui_pwd"));
+			ps.setString(2, user.get("ui_genre"));
+			ps.setString(3, user.get("ui_email"));
+			ps.setString(4, user.get("ui_phone1"));
+			ps.setString(5, user.get("ui_phone2"));
+			ps.setString(6, user.get("ui_address"));
+			ps.setString(7, user.get("ui_hint"));
+			ps.setString(8, user.get("ui_answer"));
+			ps.setString(9, user.get("ui_num"));
 			cnt = ps.executeUpdate();
 			DBConn.commit(con);
 		} catch(Exception e) {
@@ -176,10 +181,10 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public int deleteUser(int uiNum) {
+		String sql = "delete from user_info where ui_num = ?"; 
 		Connection con = DBConn.getConn();
 		PreparedStatement ps = null;
 		int cnt = 0;
-		String sql = "delete from user_info where ui_num = ?"; 
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, uiNum);
@@ -194,14 +199,5 @@ public class UserDAOImpl implements UserDAO {
 		
 		return cnt;
 	}
-
-	
-	public static void main(String[] args) {
-		UserDAO userDAO = new UserDAOImpl();
-		Map<String, String> user = new HashMap<>();
-		user.put("ui_id", "black");
-		System.out.println(userDAO.selectUser(user));
-	}
-
 
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>회원수정</title>
 <jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
 <script src="/resources/js/validation.js"></script>
 </head>
@@ -23,17 +23,17 @@ Map<String,String> user = (Map<String,String>)session.getAttribute("user");
 		     <div class="col-md-9 register-right">
 		         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
 		         </ul>
-		         <form action="/user/insert" method="post" onsubmit="return check()">
+		         <form action="/user/update" method="post" onsubmit="return check()">
 			         <div class="tab-content" id="myTabContent">
 			             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 			                 <h3 class="register-heading">회원수정</h3>
 			                 <div class="row register-form">
 			                     <div class="col-md-6">
 			                         <div class="form-group">
-			                             <input type="text" class="form-control" placeholder="이름" name="ui_name" id="name" value="<%=user.get("ui_name")%>" />
+			                             <input type="text" class="form-control" placeholder="이름" name="ui_name" id="name" value="<%=user.get("ui_name")%>" disabled/>
 			                         </div>
 			                         <div class="form-group">
-			                             <input type="text" class="form-control" placeholder="아이디" name="ui_id" id="id" value="<%=user.get("ui_id")%>" />
+			                             <input type="text" class="form-control" placeholder="아이디" name="ui_id" id="id" value="<%=user.get("ui_id")%>" disabled/>
 			                         </div>	
 			                         <div class="form-group">
 			                             <input type="password" class="form-control" placeholder="비밀번호" name="ui_pwd" id="pwd1"  />
