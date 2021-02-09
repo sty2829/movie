@@ -24,6 +24,7 @@ public class UserDAOImpl implements UserDAO {
 			"ui_address\r\n" + 
 			"ui_hint\r\n" + 
 			"ui_answer\r\n" + 
+			"ui_img\r\n" +
 			"credat\r\n" + 
 			"cretim\r\n" + 
 			"moddat\r\n" + 
@@ -43,8 +44,8 @@ public class UserDAOImpl implements UserDAO {
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				Map<String,String> users = new HashMap<>();
-				for(int i=0; i<cols.length; i++) {
-					users.put(cols[i], rs.getString(cols[i]));
+				for(String col : cols) {
+					users.put(col, rs.getString(col));
 				}		
 				userList.add(users);
 			}
@@ -69,8 +70,8 @@ public class UserDAOImpl implements UserDAO {
 			rs = ps.executeQuery();
 			if(rs.next()) {
 				Map<String,String> user = new HashMap<>();
-				for(int i=0; i<cols.length; i++) {
-					user.put(cols[i], rs.getString(cols[i]));
+				for(String col : cols) {
+					user.put(col, rs.getString(col));
 				}
 				return user;
 			}
@@ -96,8 +97,8 @@ public class UserDAOImpl implements UserDAO {
 			rs = ps.executeQuery();
 			if(rs.next()) {
 				Map<String,String> rUser = new HashMap<>();
-				for(int i=0; i<cols.length; i++) {
-					rUser.put(cols[i], rs.getString(cols[i]));
+				for(String col : cols) {
+					rUser.put(col, rs.getString(col));
 				}
 				return rUser;
 			}
@@ -116,15 +117,15 @@ public class UserDAOImpl implements UserDAO {
 		Connection con = DBConn.getConn();
 		PreparedStatement ps = null;
 		int cnt = 0;
-		String sql = "insert into user_info(UI_NUM, UI_NAME, UI_ID, "
-				+ "UI_PWD, UI_GENRE, UI_EMAIL, "
-				+ "UI_PHONE1, UI_PHONE2, UI_ADDRESS, "
-				+ "UI_HINT, UI_ANSWER, CREDAT, "
-				+ "CRETIM, MODDAT, MODTIM)"; 
-		sql += " values(seq_ui_num.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'), to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'))";
+		String sql = "insert into user_info(ui_num, ui_name, ui_id, "
+				+ "ui_pwd, ui_genre, ui_email, "
+				+ "ui_phone1, ui_phone2, ui_address, "
+				+ "ui_hint, ui_answer, ui_img, credat, "
+				+ "cretim, moddat, modtim)"; 
+		sql += " values(seq_ui_num.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'), to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'))";
 		try {
 			ps = con.prepareStatement(sql);
-			for(int i=1; i<=10; i++) {
+			for(int i=1; i<=11; i++) {
 				ps.setString(i,user.get(cols[i]));
 			};
 			cnt = ps.executeUpdate();
@@ -150,6 +151,7 @@ public class UserDAOImpl implements UserDAO {
 		sql += " ui_address = ?,"; 
 		sql += " ui_hint = ?,"; 
 		sql += " ui_answer = ?,"; 
+		sql += " ui_img = ?,"; 
 		sql += " moddat = to_char(sysdate, 'YYYYMMDD'),"; 
 		sql += " modtim = to_char(sysdate, 'HH24MISS')"; 
 		sql += " where ui_num = ?"; 
@@ -158,15 +160,10 @@ public class UserDAOImpl implements UserDAO {
 		int cnt = 0;
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(1, user.get("ui_pwd"));
-			ps.setString(2, user.get("ui_genre"));
-			ps.setString(3, user.get("ui_email"));
-			ps.setString(4, user.get("ui_phone1"));
-			ps.setString(5, user.get("ui_phone2"));
-			ps.setString(6, user.get("ui_address"));
-			ps.setString(7, user.get("ui_hint"));
-			ps.setString(8, user.get("ui_answer"));
-			ps.setString(9, user.get("ui_num"));
+			for(int i=3; i<11; i++) {
+				ps.setString(i-2, user.get(cols[i]));
+				ps.setString(10, user.get("ui_num"));
+			}
 			cnt = ps.executeUpdate();
 			DBConn.commit(con);
 		} catch(Exception e) {
@@ -200,4 +197,12 @@ public class UserDAOImpl implements UserDAO {
 		return cnt;
 	}
 
+	public static void main(String[] args) {
+		UserDAOImpl userDAOImpl = new UserDAOImpl();
+		int beginIndex = userDAOImpl.col.indexOf("ui_pwd");
+		int endIndex = userDAOImpl.col.lastIndexOf("credat");
+		String col = userDAOImpl.col.substring(beginIndex, endIndex) + "ui_num" ;
+		
+		System.out.println(col);
+	}
 }

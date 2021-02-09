@@ -77,6 +77,9 @@
 			                         <div class="form-group">
 			                             <input type="text" class="form-control" placeholder="답변을 입력해주세요" name="ui_answer" id="answer" />
 			                         </div>
+			                         <div class="form-group">
+			                             <input type="file" class="form-control" name="ui_img" id="answer" />
+			                         </div>
 			                         <input type="submit" class="btnRegister"  value="가입하기"/>
 			                     </div>
 			                 </div>

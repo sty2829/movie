@@ -1,0 +1,417 @@
+<div class="container register">
+		<div class="row">
+		     <div class="col-md-3 register-left">
+		         <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+		         <h3>안녕하세요</h3>
+		         <p>저희 영화관에 오신것을 환영합니다.</p>
+		         <input type="button" value="로그인" onclick="goPage('/views/user/login')" /><br/>
+		     </div>
+		     <div class="col-md-9 register-right">
+		         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+		         </ul>
+		         <form action="/user/insert" method="post" onsubmit="return check()">
+			         <div class="tab-content" id="myTabContent">
+			             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+			                 <h3 class="register-heading">회원가입</h3>
+			                 <div class="row register-form">
+			                     <div class="col-md-6">
+			                         <div class="form-group">
+			                             <input type="text" class="form-control" placeholder="이름" name="ui_name" id="ui_name"/>
+			                         </div>
+			                         <div class="form-group">
+			                             <input type="text" class="form-control" placeholder="아이디" name="ui_id" id="ui_id" />
+			                         </div>	
+			                         <div class="form-group">
+			                             <input type="password" class="form-control" placeholder="비밀번호" name="ui_pwd" id="ui_pwd1"/>
+			                         </div>
+			                         <div class="form-group">
+			                             <input type="password" class="form-control"  placeholder="비밀번호 재확인" id="ui_pwd2"/>
+			                         </div>
+			                         <div class="form-group">
+			                         	<input type="text" class="form-control" placeholder="주소" name="ui_address" id="ui_address">
+			                         </div>
+			                     	 <div class="form-group">
+			                     	 	<label for="ui_genre1" style="float:left">스릴러</label>
+			                         	<input type="checkbox" name="ui_genre" id="ui_genre1" value="스릴러">
+			                     	 	<label for="ui_genre2">반전</label>
+			                         	<input type="checkbox" name="ui_genre" id="ui_genre2" value="반전">
+			                         	<label for="ui_genre3">추리</label>
+			                         	<input type="checkbox" name="ui_genre" id="ui_genre3" value="추리">
+			                         	<label for="ui_genre4">미스터리</label>
+			                         	<input type="checkbox" name="ui_genre" id="ui_genre4" value="미스터리">
+			                         </div>
+			                     </div>
+			                     <div class="col-md-6">
+			                         <div class="form-group">
+			                             <input type="email" class="form-control" placeholder="이메일" name="ui_email" id="ui_email" />
+			                         </div>
+			                         <div class="form-group">
+			                         	<select name="ui_phone1" class="form-control" style="width:75px; float:left">
+			                                 <option value="010">010</option>
+			                                 <option value="011">011</option>
+			                                 <option value="018">018</option>
+			                                 <option value="019">019</option>
+			                             </select>
+			                             <input type="text" name="ui_phone2" id="ui_phone2" class="form-control" placeholder="휴대 전화" style="width: 214px"/>
+			                         </div>
+			                         <div class="form-group">
+			                             <select class="form-control" name="ui_hint" id="ui_hint">
+			                                 <option value="" class="hidden" selected>암호 힌트</option>
+			                                 <option value="birthday">생년월일은 ?</option>
+			                                 <option value="oldPhone">번호 뒷자리 ?</option>
+			                                 <option value="petName">애완동물 이름은 ?</option>
+			                             </select>
+			                         </div>
+			                         <div class="form-group">
+			                             <input type="text" class="form-control" placeholder="답변을 입력해주세요" name="ui_answer" id="ui_answer" />
+			                         </div>
+			                         <input type="submit" class="btnRegister"  value="가입하기"/>
+			                     </div>
+			                 </div>
+			             </div>
+			         </div>
+		         </form>
+		     </div>
+		</div>
+	</div>
+	<script>
+		function validation(id, min, max, msg) {
+			var obj = document.querySelector(id);
+			if ((min && obj.value.trim().length < min)
+					|| (max && obj.value.trim().length > max)) {
+				alert(msg);
+				obj.value = '';
+				obj.focus();
+				return false;
+			}
+			return true;
+		}
+	
+		function check(){
+			if(!validation('#ui_name', 2, 4, '이름은 최소 2글자 최대 10글자 입니다.' )){
+				return false;
+			}
+
+			if(!validation('#ui_id', 4, 10, '아이디는 최소 4글자 최대 10글자 입니다' )){
+				return false;
+			}
+			
+			if(!validation('#ui_pwd1', 6, 20, '비밀번호는 최소 6글자 최대 10글자 입니다.' )){
+				return false;
+			}
+			var pwd1 = document.querySelector('#ui_pwd1');
+			var pwd2 = document.querySelector('#ui_pwd2');
+			if(pwd1.value.trim() != pwd2.value.trim()){
+				alert('비밀번호가 일치하지 않습니다.');
+				pwd2.value = '';
+				pwd2.focus();
+				return false;
+			}
+			if (!validation('#ui_address', 10, 100, '주소는 최소 10글자 최대 100글자 입니다.')) {
+				return false;
+			}
+			if (!validation('#ui_phone2', 7, 10, '핸드폰 뒷자리는 최소 숫자 7자리 입니다.')) {
+				return false;
+			}
+			var hint = document.querySelector('#ui_hint');
+			if(hint.value == ''){
+				alert('힌트를 선택해주세요');
+				hint.focus();
+				return false;
+			}
+			if (!validation('#ui_answer', 2, 10, '답변은 최소 2글자 최대 10글자 입니다.')) {
+				return false;
+			}
+			var genres = document.querySelectorAll('[name=ui_genre]:checked');
+			if(genres.length == 0){
+				alert('좋아하는 장르를 1개 이상 선택해주세요.');
+				document.querySelector('#ui_genre1').focus();
+				return false;
+			}
+			return true;
+		}
+		function goPage(url){
+			location.href = url;
+		}
+	</script>
+
+
+====
+
+DAO
+
+package com.movie.web.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+
+import com.movie.web.conn.DBConn;
+import com.movie.web.dao.UserDAO;
+
+public class UserDAOImpl implements UserDAO {
+	
+	private static final String col = "ui_num\r\n" + 
+			"ui_name\r\n" + 
+			"ui_id\r\n" + 
+			"ui_pwd\r\n" + 
+			"ui_genre\r\n" + 
+			"ui_email\r\n" + 
+			"ui_phone1\r\n" + 
+			"ui_phone2\r\n" + 
+			"ui_address\r\n" + 
+			"ui_hint\r\n" + 
+			"ui_answer\r\n" + 
+			"credat\r\n" + 
+			"cretim\r\n" + 
+			"moddat\r\n" + 
+			"modtim";
+	private static final String[] cols = col.split("\r\n");
+
+	@Override
+	public List<Map<String, String>> selectUserList() {
+		Connection con = DBConn.getConn();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Map<String,String>> userList = new ArrayList<>();
+		String sql = "select * from user_info";
+		try {
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Map<String,String> user = new HashMap<>();
+				user.put("ui_num", rs.getString("ui_num"));
+				user.put("ui_name", rs.getString("ui_name"));
+				user.put("ui_id", rs.getString("ui_id"));
+				user.put("ui_pwd", rs.getString("ui_pwd"));
+				user.put("ui_genre", rs.getString("ui_genre"));
+				user.put("ui_email", rs.getString("ui_email"));
+				user.put("ui_phone1", rs.getString("ui_phone1"));
+				user.put("ui_phone2", rs.getString("ui_phone2"));
+				user.put("ui_address", rs.getString("ui_address"));
+				user.put("ui_hint", rs.getString("ui_hint"));
+				user.put("ui_answer", rs.getString("ui_answer"));
+				user.put("credat", rs.getString("credat"));
+				user.put("cretim", rs.getString("cretim"));
+				user.put("moddat", rs.getString("moddat"));
+				user.put("modtim", rs.getString("modtim"));
+				
+				userList.add(user);
+			}
+
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBConn.close(con, ps, rs);
+		}
+		return userList;
+	}
+
+	@Override
+	public Map<String, String> selectUser(int uiNum) {
+		Connection con = DBConn.getConn();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Map<String,String> user = new HashMap<>();
+		String sql = "select * from user_info where ui_num = ?";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, uiNum);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				user.put("ui_num", rs.getString("ui_num"));
+				user.put("ui_name", rs.getString("ui_name"));
+				user.put("ui_id", rs.getString("ui_id"));
+				user.put("ui_pwd", rs.getString("ui_pwd"));
+				user.put("ui_genre", rs.getString("ui_genre"));
+				user.put("ui_email", rs.getString("ui_email"));
+				user.put("ui_phone1", rs.getString("ui_phone1"));
+				user.put("ui_phone2", rs.getString("ui_phone2"));
+				user.put("ui_address", rs.getString("ui_address"));
+				user.put("ui_hint", rs.getString("ui_hint"));
+				user.put("ui_answer", rs.getString("ui_answer"));
+				user.put("credat", rs.getString("credat"));
+				user.put("cretim", rs.getString("cretim"));
+				user.put("moddat", rs.getString("moddat"));
+				user.put("modtim", rs.getString("modtim"));
+			}
+
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBConn.close(con, ps, rs);
+		}
+		return user;
+	}
+
+	@Override
+	public int insertUser(Map<String, String> user) {
+		Connection con = DBConn.getConn();
+		PreparedStatement ps = null;
+		int cnt = 0;
+		String sql = "insert into user_info(UI_NUM, UI_NAME, UI_ID, "
+				+ "UI_PWD, UI_GENRE, UI_EMAIL, "
+				+ "UI_PHONE1, UI_PHONE2, UI_ADDRESS, "
+				+ "UI_HINT, UI_ANSWER, CREDAT, "
+				+ "CRETIM, MODDAT, MODTIM)"; 
+		sql += " values(seq_ui_num.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'), to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'))";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, user.get("ui_name"));
+			ps.setString(2, user.get("ui_id"));
+			ps.setString(3, user.get("ui_pwd"));
+			ps.setString(4, user.get("ui_genre"));
+			ps.setString(5, user.get("ui_email"));
+			ps.setString(6, user.get("ui_phone1"));
+			ps.setString(7, user.get("ui_phone2"));
+			ps.setString(8, user.get("ui_address"));
+			ps.setString(9, user.get("ui_hint"));
+			ps.setString(10, user.get("ui_answer"));
+			cnt = ps.executeUpdate();
+			DBConn.commit(con);
+		} catch(Exception e) {
+			DBConn.rollback(con);
+			e.printStackTrace();
+		} finally {
+			DBConn.close(con, ps);
+		}
+		
+		return cnt;
+	}
+
+	@Override
+	public int updateUser(Map<String, String> user) {
+		Connection con = DBConn.getConn();
+		PreparedStatement ps = null;
+		int cnt = 0;
+		String sql = "update user_info set";
+		sql += " ui_name = ?"; 
+		sql += " ui_pwd = ?"; 
+		sql += " ui_genre = ?"; 
+		sql += " ui_email = ?"; 
+		sql += " ui_phone1 = ?"; 
+		sql += " ui_phone2 = ?"; 
+		sql += " ui_address = ?"; 
+		sql += " ui_hint = ?"; 
+		sql += " ui_answer = ?"; 
+		sql += " moddat = to_char(sysdate, 'YYYYMMDD')"; 
+		sql += " modtim = to_char(sysdate, 'HH24MISS')"; 
+		sql += " where ui_num = ?"; 
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, user.get("ui_name"));
+			ps.setString(2, user.get("ui_id"));
+			ps.setString(3, user.get("ui_pwd"));
+			ps.setString(4, user.get("ui_genre"));
+			ps.setString(5, user.get("ui_email"));
+			ps.setString(6, user.get("ui_phone1"));
+			ps.setString(7, user.get("ui_phone2"));
+			ps.setString(8, user.get("ui_address"));
+			ps.setString(9, user.get("ui_hint"));
+			ps.setString(10, user.get("ui_answer"));
+			cnt = ps.executeUpdate();
+			DBConn.commit(con);
+		} catch(Exception e) {
+			DBConn.rollback(con);
+			e.printStackTrace();
+		} finally {
+			DBConn.close(con, ps);
+		}
+		
+		return cnt;
+	}
+
+	@Override
+	public int deleteUser(int uiNum) {
+		Connection con = DBConn.getConn();
+		PreparedStatement ps = null;
+		int cnt = 0;
+		String sql = "delete from user_info where ui_num = ?"; 
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, uiNum);
+			cnt = ps.executeUpdate();
+			DBConn.commit(con);
+		} catch(Exception e) {
+			DBConn.rollback(con);
+			e.printStackTrace();
+		} finally {
+			DBConn.close(con, ps);
+		}
+		
+		return cnt;
+	}
+
+	
+	public static void main(String[] args) {
+		UserDAO userDAO = new UserDAOImpl();
+		for(int i=0; i<cols.length; i++) {
+		}
+	}
+}
+
+==
+servlet
+
+package com.movie.web.servlet;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.movie.web.service.UserService;
+import com.movie.web.service.impl.UserServiceImpl;
+
+public class UserServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	UserService userService = new UserServiceImpl();
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String name = request.getParameter("ui_name");
+		String id = request.getParameter("ui_id");
+		String pwd = request.getParameter("ui_pwd");
+		String email = request.getParameter("ui_email");
+		String address = request.getParameter("ui_address");
+		String[] genres = request.getParameterValues("genre");
+		String genre = "";
+		for(int i=0; i<genres.length; i++) {
+			genre += genres[i] + ",";
+		}
+		genre = genre.substring(0,genre.length()-1);
+		String phone1 = request.getParameter("ui_phone1");
+		String phone2 = request.getParameter("ui_phone2");
+		String hint = request.getParameter("ui_hint");
+		String answer = request.getParameter("ui_answer");
+		Map<String,String> user = new HashMap<>();
+		user.put("ui_name", name);
+		user.put("ui_id", id);
+		user.put("ui_pwd", pwd);
+		user.put("ui_email", email);
+		user.put("ui_address", address);
+		user.put("ui_genre", genre);
+		user.put("ui_phone1", phone1);
+		user.put("ui_phone2", phone2);
+		user.put("ui_hint", hint);
+		user.put("ui_answer", answer);
+		Map<String, String> rMap = userService.insertUser(user);
+		request.setAttribute("rMap", rMap);
+		ViewServlet.goPage(request, response, "/views/common/msg");
+	}
+
+}
