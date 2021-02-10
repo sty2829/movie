@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
@@ -53,11 +54,21 @@ public class MapConvert {
 					long size = fileItem.getSize();
 					if(size != 0) { 
 						value = fileItem.getName();
-						File saveFile = new File(UPLOAD_PATH + File.separator + value);
+						int idx = value.lastIndexOf(".");
+						if(idx==-1) {
+							throw new ServletException("인식할 수 없는 확장자입니다.");
+						}
+						String ext = value.substring(idx);
+						value += System.nanoTime() + ext;
+ 						File saveFile = new File(UPLOAD_PATH + File.separator + value);
 						fileItem.write(saveFile);
 					}
 				}
 				if(!"".equals(value)) {
+					if(param.containsKey(key)) {
+						value = param.get(key) + "," + value;
+						param.put(key, value);
+					}
 					param.put(key, value);
 				}
 			}

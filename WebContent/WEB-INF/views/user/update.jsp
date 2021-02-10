@@ -17,13 +17,13 @@ Map<String,String> user = (Map<String,String>)session.getAttribute("user");
 	<div class="container register">
 		<div class="row">
 		     <div class="col-md-3 register-left">
-		         <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+		         <img src="/upload/<%=user.get("ui_img") %>" alt="" style="width:200px" class="rounded-circle" />
 		         <h3><%= user.get("ui_name")%>님 <br> 안녕하세요</h3>
 		     </div>
 		     <div class="col-md-9 register-right">
 		         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
 		         </ul>
-		         <form action="/user/update" method="post" onsubmit="return check()">
+		         <form action="/user/update" method="post" onsubmit="return check()" enctype="multipart/form-data">
 			         <div class="tab-content" id="myTabContent">
 			             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 			                 <h3 class="register-heading">회원수정</h3>
@@ -78,6 +78,9 @@ Map<String,String> user = (Map<String,String>)session.getAttribute("user");
 			                         </div>
 			                         <div class="form-group">
 			                             <input type="text" class="form-control" placeholder="답변을 입력해주세요" name="ui_answer" id="answer" value="<%=user.get("ui_answer")%>" />
+			                         </div>
+			                         <div class="form-group">
+			                             <input type="file" class="form-control" name="ui_img" id="img" value="<%=user.get("ui_img")%>" />
 			                         </div>
 			                         <input type="submit" class="btnRegister"  value="수정하기"/>
 			                     </div>

@@ -62,6 +62,7 @@ public class UserServlet extends HttpServlet {
 			}
 			user.put("ui_num", pUser.get("ui_num"));
 			rMap = userService.updateUser(user);
+			System.out.println(rMap);
 			if(!"0".equals(rMap.get("result"))) {
 				session.setAttribute("user", rMap);
 				path = "/views/user/info";

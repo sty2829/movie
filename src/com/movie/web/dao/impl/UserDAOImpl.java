@@ -123,11 +123,16 @@ public class UserDAOImpl implements UserDAO {
 				+ "ui_hint, ui_answer, ui_img, credat, "
 				+ "cretim, moddat, modtim)"; 
 		sql += " values(seq_ui_num.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'), to_char(sysdate, 'YYYYMMDD'), to_char(sysdate, 'HH24MISS'))";
+		int beginIndex = this.col.indexOf("ui_name");
+		int endIndex = this.col.lastIndexOf("credat");
+		String col = this.col.substring(beginIndex, endIndex);
+		String[] cols = col.split("\r\n");
 		try {
 			ps = con.prepareStatement(sql);
-			for(int i=1; i<=11; i++) {
-				ps.setString(i,user.get(cols[i]));
-			};
+			int count = 1;
+			for(String c : cols) {
+				ps.setString(count++,user.get(c));
+			}
 			cnt = ps.executeUpdate();
 			DBConn.commit(con);
 		} catch(Exception e) {
@@ -155,14 +160,18 @@ public class UserDAOImpl implements UserDAO {
 		sql += " moddat = to_char(sysdate, 'YYYYMMDD'),"; 
 		sql += " modtim = to_char(sysdate, 'HH24MISS')"; 
 		sql += " where ui_num = ?"; 
+		int beginIndex = this.col.indexOf("ui_pwd");
+		int endIndex = this.col.lastIndexOf("credat");
+		String col = this.col.substring(beginIndex, endIndex) + "ui_num" ;
+		String[] cols = col.split("\r\n");
 		Connection con = DBConn.getConn();
 		PreparedStatement ps = null;
 		int cnt = 0;
 		try {
 			ps = con.prepareStatement(sql);
-			for(int i=3; i<11; i++) {
-				ps.setString(i-2, user.get(cols[i]));
-				ps.setString(10, user.get("ui_num"));
+			int count = 1;
+			for(String c : cols) {
+				ps.setString(count++, user.get(c));
 			}
 			cnt = ps.executeUpdate();
 			DBConn.commit(con);
@@ -202,7 +211,10 @@ public class UserDAOImpl implements UserDAO {
 		int beginIndex = userDAOImpl.col.indexOf("ui_pwd");
 		int endIndex = userDAOImpl.col.lastIndexOf("credat");
 		String col = userDAOImpl.col.substring(beginIndex, endIndex) + "ui_num" ;
-		
-		System.out.println(col);
+		String[] cols = col.split("\r\n");
+		System.out.println(cols.length);
+		for(String c : cols) {
+			System.out.println(c);
+		}
 	}
 }
